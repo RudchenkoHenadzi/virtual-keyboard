@@ -1,3 +1,96 @@
 body {
   font-family: 'Nunito Sans', sans-serif;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 710px;
+  margin: 50px auto 0 auto;
+}
+
+.virtual-tablo {
+  display: flex;
+  height: 200px;
+}
+
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 700px;
+  margin: 0 auto;
+  padding: 5px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background-color: #888;
+}
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  background-color: #333;
+  color: white;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.key.press {
+  background-color: #eafe32;
+  color: #333;
+}
+
+.key:hover {
+  background-color: #eafe32;
+  color: #333;
+}
+
+.key.flex-1 {
+  flex: 1;
+}
+
+.key.flex-2 {
+  flex: 2;
+}
+
+.key.flex-3 {
+  flex: 3;
+}
+
+.key.flex-4 {
+  flex: 4;
+}
+
+/* .key.w100 {
+  width: 100px;
+}
+
+.key.w50 {
+  width: 50px;
+} */
+
+.row {
+  display: flex;
+  gap: 3px;
+}
+
+.eng, .rus {
+  display: none;
+}
+
+.eng.active,
+.rus.active {
+  display: flex;
+}
+
+.normal.hidden, 
+.shift.hidden, 
+.caps.hidden, 
+.shiftCaps.hidden {
+  display: none;
+}
