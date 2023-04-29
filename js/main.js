@@ -140,12 +140,46 @@ document.querySelector('.AltLeft').classList.add('flex-1')
 document.querySelector('.AltRight').classList.add('flex-1')
 
 window.addEventListener('keydown', function(event) {
-  console.log(event.code)
-  document.querySelector(`.${event.code}`).classList.add('press')
+  
+  if(event.code === 'Tab') {
+    event.preventDefault()
+  }
+
+  if(event.code !== 'CapsLock') {
+    document.querySelector(`.${event.code}`).classList.add('press')
+  } else {
+    document.querySelector(`.${event.code}`).classList.contains('press') ? document.querySelector(`.${event.code}`).classList.remove('press') : document.querySelector(`.${event.code}`).classList.add('press')
+  }
+
+  virtualTablo.focus()
+
+  console.log(virtualTablo.value)
+
+  if(event.code === 'Tab') {
+    virtualTablo.value += '    '
+  }
+
+  // if(event.code !== 'CapsLock' && 
+  //    event.code !== 'Tab' &&
+  //    event.code !== 'ControlLeft' &&
+  //    event.code !== 'ControlRight' &&
+  //    event.code !== 'ControlLeft' &&
+  //    event.code !== 'ControlRight' &&
+  //    event.code !== 'ShiftLeft' &&
+  //    event.code !== 'ShiftRight' &&
+  //    event.code !== 'AltLeft' &&
+  //    event.code !== 'AltRight' &&
+  //    event.code !== 'Backspace' &&
+  //    event.code !== 'Backspace') {
+  //     // virtualTablo.value += event.key
+  // }
+
 })
 
 window.addEventListener('keyup', function(event) {
-  document.querySelector(`.${event.code}`).classList.remove('press')
+  if(event.code !== 'CapsLock') {
+    document.querySelector(`.${event.code}`).classList.remove('press')
+  }
 })
 
 /* Нажатие Shift */
