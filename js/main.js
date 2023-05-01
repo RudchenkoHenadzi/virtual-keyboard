@@ -141,120 +141,67 @@ document.querySelector('.AltRight').classList.add('flex-1')
 
 let langKeyboard = 'eng'
 
-document.addEventListener('keydown', function(event) {
-  const button = document.querySelector(`.${event.code}`)
-  activeButton(button, event)
-  if(event.code === 'ShiftLeft') {
-    pressShift()
-  }
-  if(event.code === 'CapsLock') {
-    pressCaps()
-  }
-  focusTablo()
+const keys = document.querySelectorAll('.key')
 
-  console.log(event)
+document.addEventListener('keydown', function(event) {
+
+  // Подсветка активных клавиш
+  if(event.getModifierState('CapsLock')) {
+    document.querySelector(`.${event.code}`).classList.contains('press') ? 
+    document.querySelector(`.${event.code}`).classList.remove('press') :
+    document.querySelector(`.${event.code}`).classList.add('press') 
+  } else {
+    document.querySelector(`.${event.code}`).classList.add('press')
+  }
+
+  // Переключение клавиатуры в режим CapsLock
+
+  if(event.getModifierState('CapsLock')) {
+    console.log('Активировали карс')
+    document.querySelectorAll('.key .active span').forEach(element => {
+      element.classList.contains('caps') ? element.classList.remove('hidden') : element.classList.add('hidden')
+    });
+  } else {
+    console.log('Деактивировали карс')
+    document.querySelectorAll('.key .active span').forEach(element => {
+      element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
+    });
+  }
+
+  // Переключение клавиатуры в режиме Shift
+
+  if(event.shiftKey && !event.getModifierState('CapsLock')) {
+    console.log('Активировали Shift')
+    document.querySelectorAll('.key .active span').forEach(element => {
+      element.classList.contains('shift') ? element.classList.remove('hidden') : element.classList.add('hidden')
+    });
+  } else if(event.shiftKey && event.getModifierState('CapsLock')) {
+    document.querySelectorAll('.key .active span').forEach(element => {
+      element.classList.contains('shiftCaps') ? element.classList.remove('hidden') : element.classList.add('hidden')
+    });
+  }
+
+
+console.log(event)
 })
 
 document.addEventListener('keyup', function(event) {
-  event.preventDefault()
-  const button = document.querySelector(`.${event.code}`)
-  reActiveButton(button, event)
-  if(event.code === 'ShiftLeft') {
-    unPressShift()
-  }
-  focusTablo()
-  switchLang(event)
-})
-
-virtualKeyboard.addEventListener('mousedown', function(event) {
-  activeButton(event.target.closest('.key'))
-  focusTablo()
-  if(event.shiftKey) {
-    virtualTablo.value += event.target.closest('.key').querySelector('.active .shift').textContent
-  }
-})
-
-virtualKeyboard.addEventListener('mouseup', function(event) {
-  reActiveButton(event.target.closest('.key'))
-  focusTablo()
-})
-
-function activeButton(element, event) {
-  if(event.code === 'CapsLock') {
-    element.classList.contains('press') ? element.classList.remove('press') : element.classList.add('press')
-  } else {
-    element.classList.add('press')
-  }
-}
-
-function reActiveButton(element, event) {
-  if(event.code !== 'CapsLock') {
-    element.classList.remove('press')
-  }
-}
-
-function handlerMouse(element) {
   
-}
-
-function print() {
-  // if(event.code !== 'Backspace' &&
-  //   event.code !== 'CapsLock' &&
-  //   event.code !== 'ControlLeft' &&
-  //   event.code !== 'ControlRight' &&
-  //   event.code !== 'ShiftLeft' &&
-  //   event.code !== 'MetaLeft'
-  // ) {
-
-  // }
-  virtualTablo.value += element.querySelector('.active .normal').textContent
-}
-
-function focusTablo() {
-  virtualTablo.focus()
-}
-
-function switchLang(event) {
-
-  if(event.code === 'AltLeft' && event.shiftKey || 
-     event.code === 'AltRight' && event.shiftKey ||
-     event.code === 'ShiftLeft' && event.altKey ||
-     event.code === 'ShiftRight' && event.altKey) {
-    langKeyboard === 'eng' ? langKeyboard = 'rus' : langKeyboard = 'eng'
+  // Снятие подсветки с ранее активных клавиш
+  if(event.code !== 'CapsLock') {
+    document.querySelector(`.${event.code}`).classList.remove('press')
   }
 
-  const activeKeys = document.querySelectorAll('.key div')
+  // Возвращение клавиатуры из режима shift
+  if(!event.shiftKey && !event.getModifierState('CapsLock')) {
+    console.log('Деактивировали Shift')
+    document.querySelectorAll('.key .active span').forEach(element => {
+      element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
+    });
+  } else if(!event.shiftKey && event.getModifierState('CapsLock')) {
+    document.querySelectorAll('.key .active span').forEach(element => {
+      element.classList.contains('caps') ? element.classList.remove('hidden') : element.classList.add('hidden')
+    });
+  }
 
-  activeKeys.forEach(btn => {
-    btn.classList.contains(langKeyboard) ? btn.classList.add('active') : btn.classList.remove('active')
-  });
-
-}
-
-function pressShift() {
-  let allActiveKeys = document.querySelectorAll('.key .active span')
-  allActiveKeys.forEach(element => {
-    element.classList.contains('shift') ? element.classList.remove('hidden') : element.classList.add('hidden')
-  });
-}
-
-function unPressShift() {
-  let allActiveKeys = document.querySelectorAll('.key .active span')
-  allActiveKeys.forEach(element => {
-    element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
-  });
-}
-
-function pressCaps() {
-  let allActiveKeys = document.querySelectorAll('.key .active span')
-  allActiveKeys.forEach(element => {
-    element.classList.contains('caps') ? element.classList.remove('hidden') : element.classList.add('hidden')
-  });
-}
-
-function unPressCaps() {
-  let allActiveKeys = document.querySelectorAll('.key .active span')
-  allActiveKeys.forEach(element => {
-    element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
-  });
-}
+})
