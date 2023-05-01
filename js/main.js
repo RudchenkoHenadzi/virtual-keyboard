@@ -145,6 +145,17 @@ const keys = document.querySelectorAll('.key')
 
 document.addEventListener('keydown', function(event) {
 
+  if(event.code !== 'Backspace' &&
+     event.code !== 'Space' &&
+     event.code !== 'ArrowLeft' &&
+     event.code !== 'ArrowRight' &&
+     event.code !== 'ArrowUp' &&
+     event.code !== 'ArrowDown' &&
+     event.code !== 'Enter'
+  ) {
+    event.preventDefault()
+  }
+
   // Подсветка активных клавиш
   if(event.getModifierState('CapsLock')) {
     document.querySelector(`.${event.code}`).classList.contains('press') ? 
@@ -157,12 +168,10 @@ document.addEventListener('keydown', function(event) {
   // Переключение клавиатуры в режим CapsLock
 
   if(event.getModifierState('CapsLock')) {
-    console.log('Активировали карс')
     document.querySelectorAll('.key .active span').forEach(element => {
       element.classList.contains('caps') ? element.classList.remove('hidden') : element.classList.add('hidden')
     });
   } else {
-    console.log('Деактивировали карс')
     document.querySelectorAll('.key .active span').forEach(element => {
       element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
     });
@@ -171,7 +180,6 @@ document.addEventListener('keydown', function(event) {
   // Переключение клавиатуры в режиме Shift
 
   if(event.shiftKey && !event.getModifierState('CapsLock')) {
-    console.log('Активировали Shift')
     document.querySelectorAll('.key .active span').forEach(element => {
       element.classList.contains('shift') ? element.classList.remove('hidden') : element.classList.add('hidden')
     });
@@ -181,8 +189,50 @@ document.addEventListener('keydown', function(event) {
     });
   }
 
+  // Фокусировка на табло
 
-console.log(event)
+  virtualTablo.focus()
+  
+  // Печать на табло
+  
+  if(event.code !== 'CapsLock' &&
+     event.code !== 'Tab' &&
+     event.code !== 'ShiftLeft' &&
+     event.code !== 'ShiftRight' &&
+     event.code !== 'ControlLeft' &&
+     event.code !== 'ControlRight' &&
+     event.code !== 'AltLeft' &&
+     event.code !== 'AltRight' &&
+     event.code !== 'MetaLeft' &&
+     event.code !== 'Backspace' &&
+     event.code !== 'ArrowRight' &&
+     event.code !== 'ArrowLeft' &&
+     event.code !== 'ArrowUp' &&
+     event.code !== 'ArrowDown' &&
+     event.code !== 'Enter'
+  ) {
+    document.querySelectorAll(`.${event.code} .active span`).forEach(element => {
+      if(!element.classList.contains('hidden')) {
+        virtualTablo.value += element.textContent
+      }
+    });
+  }
+
+  // Переключение языка
+
+  if(event.shiftKey && event.altKey) {
+
+    langKeyboard === 'eng' ? langKeyboard = 'rus' : langKeyboard = 'eng'
+    document.querySelectorAll('.key div').forEach(el => {
+      if(el.classList.contains(langKeyboard)) {
+        el.classList.add('active')
+      } else {
+        el.classList.remove('active')
+      }
+    })
+  }
+
+// console.log(event)
 })
 
 document.addEventListener('keyup', function(event) {
@@ -194,7 +244,6 @@ document.addEventListener('keyup', function(event) {
 
   // Возвращение клавиатуры из режима shift
   if(!event.shiftKey && !event.getModifierState('CapsLock')) {
-    console.log('Деактивировали Shift')
     document.querySelectorAll('.key .active span').forEach(element => {
       element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
     });
@@ -205,3 +254,118 @@ document.addEventListener('keyup', function(event) {
   }
 
 })
+
+// Управление клавиатурой с помощью мыши
+
+let capsMode = 'caps'
+let shiftMode = 'shift'
+let capsShiftMode = 'shiftCaps'
+let normalMode = 'normal'
+
+virtualKeyboard.addEventListener('mousedown', function(event) {
+
+  // Подсветка активных клавиш
+
+  if(event.target.closest('.key').classList.contains('CapsLock')) {
+    event.target.closest('.key').classList.toggle('press')
+  } else {
+    event.target.closest('.key').classList.add('press')
+  }
+
+  // Включение режима shift
+
+  if(event.target.closest('.key').classList.contains('ShiftLeft')) {
+    document.querySelectorAll('.key .active span').forEach(el => {
+      if(el.classList.contains('shift')) {
+        el.classList.remove('hidden')
+      } else {
+        el.classList.add('hidden')
+      }
+    })
+  }
+
+  // Фокусировка на табло
+
+  virtualTablo.focus()
+
+  // Печать на табло
+
+  if(!event.target.closest('.key').classList.contains('Tab') &&
+     !event.target.closest('.key').classList.contains('CapsLock') &&
+     !event.target.closest('.key').classList.contains('ShiftLeft') &&
+     !event.target.closest('.key').classList.contains('ControlLeft') &&
+     !event.target.closest('.key').classList.contains('MetaLeft') &&
+     !event.target.closest('.key').classList.contains('AltLeft') &&
+     !event.target.closest('.key').classList.contains('AltRight') &&
+     !event.target.closest('.key').classList.contains('Backspace') &&
+     !event.target.closest('.key').classList.contains('Enter') &&
+     !event.target.closest('.key').classList.contains('ShiftRight') &&
+     !event.target.closest('.key').classList.contains('ControlRight')
+  ) {
+    event.target.closest('.key').querySelectorAll('.active span').forEach(element => {
+      if(!element.classList.contains('hidden')) {
+        virtualTablo.value += element.textContent
+      }
+    });
+  }
+
+  if(event.target.closest('.key').classList.contains('Tab')) {
+    virtualTablo.value += '    '
+  }
+
+  if(event.target.closest('.key').classList.contains('Backspace')) {
+    virtualTablo.value = virtualTablo.value.slice(0, -1)
+  }
+
+// console.log(event.target.closest('.key'))
+})
+
+virtualKeyboard.addEventListener('mouseup', function(event) {
+  
+  // Снятие подсветки с активных клавиш
+
+  if(!event.target.closest('.key').classList.contains('CapsLock')) {
+    event.target.closest('.key').classList.remove('press')
+  }
+
+  // Выключение режима shift
+
+  if(event.target.closest('.key').classList.contains('ShiftLeft')) {
+    document.querySelectorAll('.key .active span').forEach(el => {
+      if(el.classList.contains('normal')) {
+        el.classList.remove('hidden')
+      } else {
+        el.classList.add('hidden')
+      }
+    })
+  }
+  
+})
+
+// Переключение клавиатуры в CapsLock режим
+
+document.querySelector('.CapsLock').addEventListener('click', function(event) {
+
+  if(document.querySelector('.CapsLock').classList.contains('press')) {
+    document.querySelectorAll('.key .active span').forEach(el => {
+      if(el.classList.contains('caps')) {
+        el.classList.remove('hidden')
+      } else {
+        el.classList.add('hidden')
+      }
+    })
+  } else {
+    document.querySelectorAll('.key .active span').forEach(el => {
+      if(el.classList.contains('normal')) {
+        el.classList.remove('hidden')
+      } else {
+        el.classList.add('hidden')
+      }
+    })
+  }
+})
+
+container.innerHTML += `
+  <div>Клавиатура создана в операционной системе Windows <br>
+  Для переключения языка комбинация: левыe alt + shift</div>
+`
