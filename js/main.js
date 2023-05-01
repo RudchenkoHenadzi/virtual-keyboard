@@ -364,8 +364,3 @@ document.querySelector('.CapsLock').addEventListener('click', function(event) {
     })
   }
 })
-
-container.innerHTML += `
-  <div>Клавиатура создана в операционной системе Windows <br>
-  Для переключения языка комбинация: левыe alt + shift</div>
-`
