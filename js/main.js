@@ -139,108 +139,122 @@ document.querySelector('.ControlRight').classList.add('flex-1')
 document.querySelector('.AltLeft').classList.add('flex-1')
 document.querySelector('.AltRight').classList.add('flex-1')
 
-window.addEventListener('keydown', function(event) {
-  
-  if(event.code === 'Tab') {
-    event.preventDefault()
+let langKeyboard = 'eng'
+
+document.addEventListener('keydown', function(event) {
+  const button = document.querySelector(`.${event.code}`)
+  activeButton(button, event)
+  if(event.code === 'ShiftLeft') {
+    pressShift()
   }
-
-  if(event.code !== 'CapsLock') {
-    document.querySelector(`.${event.code}`).classList.add('press')
-  } else {
-    document.querySelector(`.${event.code}`).classList.contains('press') ? document.querySelector(`.${event.code}`).classList.remove('press') : document.querySelector(`.${event.code}`).classList.add('press')
-  }
-
-  virtualTablo.focus()
-
-  console.log(virtualTablo.value)
-
-  if(event.code === 'Tab') {
-    virtualTablo.value += '    '
-  }
-
-  // if(event.code !== 'CapsLock' && 
-  //    event.code !== 'Tab' &&
-  //    event.code !== 'ControlLeft' &&
-  //    event.code !== 'ControlRight' &&
-  //    event.code !== 'ControlLeft' &&
-  //    event.code !== 'ControlRight' &&
-  //    event.code !== 'ShiftLeft' &&
-  //    event.code !== 'ShiftRight' &&
-  //    event.code !== 'AltLeft' &&
-  //    event.code !== 'AltRight' &&
-  //    event.code !== 'Backspace' &&
-  //    event.code !== 'Backspace') {
-  //     // virtualTablo.value += event.key
-  // }
-
-})
-
-window.addEventListener('keyup', function(event) {
-  if(event.code !== 'CapsLock') {
-    document.querySelector(`.${event.code}`).classList.remove('press')
-  }
-})
-
-/* Нажатие Shift */
-
-window.addEventListener('keydown', function(event) {
-  if(event.code === 'ShiftLeft' && event.getModifierState('CapsLock') === false) {
-    document.querySelectorAll('.normal').forEach(el => {
-      el.classList.add('hidden')
-    })
-    document.querySelectorAll('.shift').forEach(el => {
-      el.classList.remove('hidden')
-    })
-  } else if(event.code === 'ShiftLeft' && event.getModifierState('CapsLock') === true) {
-    document.querySelectorAll('.normal').forEach(el => {
-      el.classList.add('hidden')
-    })
-    document.querySelectorAll('.shift').forEach(el => {
-      el.classList.add('hidden')
-    })
-    document.querySelectorAll('.caps').forEach(el => {
-      el.classList.add('hidden')
-    })
-    document.querySelectorAll('.shiftCaps').forEach(el => {
-      el.classList.remove('hidden')
-    })
-  }
-})
-
-window.addEventListener('keyup', function(event) {
-  if(event.code === 'ShiftLeft' && event.getModifierState('CapsLock') === false) {
-    document.querySelectorAll('.normal').forEach(el => {
-      el.classList.remove('hidden')
-    })
-    document.querySelectorAll('.shift').forEach(el => {
-      el.classList.add('hidden')
-    })
-  } else if(event.code === 'ShiftLeft' && event.getModifierState('CapsLock') === true) {
-    document.querySelectorAll('.normal').forEach(el => {
-      el.classList.add('hidden')
-    })
-    document.querySelectorAll('.shift').forEach(el => {
-      el.classList.add('hidden')
-    })
-    document.querySelectorAll('.caps').forEach(el => {
-      el.classList.remove('hidden')
-    })
-    document.querySelectorAll('.shiftCaps').forEach(el => {
-      el.classList.add('hidden')
-    })
-  }
-})
-
-/* Нажатие CapsLock */
-
-window.addEventListener('keydown', function(event) {
   if(event.code === 'CapsLock') {
-    document.querySelectorAll('.normal').forEach(el => {
-      el.classList.contains('hidden') ? el.classList.remove('hidden') : el.classList.add('hidden')
-    })
-    document.querySelectorAll('.caps').forEach(el => {
-      el.classList.contains('hidden') ? el.classList.remove('hidden') : el.classList.add('hidden')
-    })
+    pressCaps()
+  }
+  focusTablo()
+
+  console.log(event)
+})
+
+document.addEventListener('keyup', function(event) {
+  event.preventDefault()
+  const button = document.querySelector(`.${event.code}`)
+  reActiveButton(button, event)
+  if(event.code === 'ShiftLeft') {
+    unPressShift()
+  }
+  focusTablo()
+  switchLang(event)
+})
+
+virtualKeyboard.addEventListener('mousedown', function(event) {
+  activeButton(event.target.closest('.key'))
+  focusTablo()
+  if(event.shiftKey) {
+    virtualTablo.value += event.target.closest('.key').querySelector('.active .shift').textContent
   }
 })
+
+virtualKeyboard.addEventListener('mouseup', function(event) {
+  reActiveButton(event.target.closest('.key'))
+  focusTablo()
+})
+
+function activeButton(element, event) {
+  if(event.code === 'CapsLock') {
+    element.classList.contains('press') ? element.classList.remove('press') : element.classList.add('press')
+  } else {
+    element.classList.add('press')
+  }
+}
+
+function reActiveButton(element, event) {
+  if(event.code !== 'CapsLock') {
+    element.classList.remove('press')
+  }
+}
+
+function handlerMouse(element) {
+  
+}
+
+function print() {
+  // if(event.code !== 'Backspace' &&
+  //   event.code !== 'CapsLock' &&
+  //   event.code !== 'ControlLeft' &&
+  //   event.code !== 'ControlRight' &&
+  //   event.code !== 'ShiftLeft' &&
+  //   event.code !== 'MetaLeft'
+  // ) {
+
+  // }
+  virtualTablo.value += element.querySelector('.active .normal').textContent
+}
+
+function focusTablo() {
+  virtualTablo.focus()
+}
+
+function switchLang(event) {
+
+  if(event.code === 'AltLeft' && event.shiftKey || 
+     event.code === 'AltRight' && event.shiftKey ||
+     event.code === 'ShiftLeft' && event.altKey ||
+     event.code === 'ShiftRight' && event.altKey) {
+    langKeyboard === 'eng' ? langKeyboard = 'rus' : langKeyboard = 'eng'
+  }
+
+  const activeKeys = document.querySelectorAll('.key div')
+
+  activeKeys.forEach(btn => {
+    btn.classList.contains(langKeyboard) ? btn.classList.add('active') : btn.classList.remove('active')
+  });
+
+}
+
+function pressShift() {
+  let allActiveKeys = document.querySelectorAll('.key .active span')
+  allActiveKeys.forEach(element => {
+    element.classList.contains('shift') ? element.classList.remove('hidden') : element.classList.add('hidden')
+  });
+}
+
+function unPressShift() {
+  let allActiveKeys = document.querySelectorAll('.key .active span')
+  allActiveKeys.forEach(element => {
+    element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
+  });
+}
+
+function pressCaps() {
+  let allActiveKeys = document.querySelectorAll('.key .active span')
+  allActiveKeys.forEach(element => {
+    element.classList.contains('caps') ? element.classList.remove('hidden') : element.classList.add('hidden')
+  });
+}
+
+function unPressCaps() {
+  let allActiveKeys = document.querySelectorAll('.key .active span')
+  allActiveKeys.forEach(element => {
+    element.classList.contains('normal') ? element.classList.remove('hidden') : element.classList.add('hidden')
+  });
+}

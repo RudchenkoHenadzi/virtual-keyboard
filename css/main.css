@@ -41,6 +41,7 @@ body {
 }
 
 .key.press {
+  border-radius: 20px;
   background-color: #eafe32;
   color: #333;
 }
