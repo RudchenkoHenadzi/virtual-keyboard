@@ -20,6 +20,7 @@ virtualKeyboard.classList.add('virtual-keyboard')
 body.prepend(container)
 container.prepend(virtualKeyboard)
 container.prepend(virtualTablo)
+container.insertAdjacentHTML('beforeend', '<div>Для смены языка alt+shift</div>')
 
 for(let i = 0; i < keyboardKeys.length; i++) {
   virtualKeyboard.innerHTML += `
