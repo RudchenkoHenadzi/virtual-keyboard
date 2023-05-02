@@ -157,7 +157,8 @@ document.addEventListener('keydown', function(event) {
   }
 
   // Подсветка активных клавиш
-  if(event.getModifierState('CapsLock')) {
+  
+  if(event.code === 'CapsLock') {
     document.querySelector(`.${event.code}`).classList.contains('press') ? 
     document.querySelector(`.${event.code}`).classList.remove('press') :
     document.querySelector(`.${event.code}`).classList.add('press') 
