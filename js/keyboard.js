@@ -356,10 +356,10 @@ export const keyboard = {
         shiftCaps: 'o',
       },
       rus: {
-        normal: '9',
-        shift: '(',
-        caps: '9',
-        shiftCaps: '(',
+        normal: 'щ',
+        shift: 'Щ',
+        caps: 'Щ',
+        shiftCaps: 'щ',
       }
     },
     KeyP: {
@@ -371,10 +371,10 @@ export const keyboard = {
         shiftCaps: 'p',
       },
       rus: {
-        normal: '0',
-        shift: ')',
-        caps: '0',
-        shiftCaps: ')',
+        normal: 'з',
+        shift: 'З',
+        caps: 'З',
+        shiftCaps: 'з',
       }
     },
     BracketLeft: {
@@ -386,10 +386,10 @@ export const keyboard = {
         shiftCaps: '[',
       },
       rus: {
-        normal: '[',
-        shift: '{',
-        caps: '{',
-        shiftCaps: '[',
+        normal: 'х',
+        shift: 'Х',
+        caps: 'Х',
+        shiftCaps: 'х',
       }
     },
     BracketRight: {
@@ -401,10 +401,10 @@ export const keyboard = {
         shiftCaps: ']',
       },
       rus: {
-        normal: ']',
-        shift: '}',
-        caps: '}',
-        shiftCaps: ']',
+        normal: 'ъ',
+        shift: 'Ъ',
+        caps: 'Ъ',
+        shiftCaps: 'ъ',
       }
     },
     Backslash: {
